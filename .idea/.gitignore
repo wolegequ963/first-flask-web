@@ -1,3 +1,7 @@
 # 默认忽略的文件
 /shelf/
 /workspace.xml
+<<<<<<< HEAD
+=======
+
+>>>>>>> 09f5b77 (Add database support with Flask-SQLAlchemy)

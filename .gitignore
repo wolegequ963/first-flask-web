@@ -2,4 +2,9 @@
 *~
 __pycache__
 .DS_Store
+<<<<<<< HEAD
 .env
+=======
+.env
+*.db
+>>>>>>> 09f5b77 (Add database support with Flask-SQLAlchemy)

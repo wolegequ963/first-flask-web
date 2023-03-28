@@ -81,4 +81,8 @@ footer {
 	
 	/* 将元素高度设置为100个像素 */
 	height: 100px;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 09f5b77 (Add database support with Flask-SQLAlchemy)

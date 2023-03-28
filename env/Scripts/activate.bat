@@ -8,7 +8,11 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
+<<<<<<< HEAD
 set VIRTUAL_ENV=C:\Users\FIREBAT\Desktop\干活\Python\env
+=======
+set VIRTUAL_ENV=C:\Users\FIREBAT\Desktop\干活\Python\watchlist\env
+>>>>>>> 09f5b77 (Add database support with Flask-SQLAlchemy)
 
 if not defined PROMPT set PROMPT=$P$G
 

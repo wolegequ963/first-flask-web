@@ -37,7 +37,11 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
+<<<<<<< HEAD
 VIRTUAL_ENV="C:\Users\FIREBAT\Desktop\干活\Python\env"
+=======
+VIRTUAL_ENV="C:\Users\FIREBAT\Desktop\干活\Python\watchlist\env"
+>>>>>>> 09f5b77 (Add database support with Flask-SQLAlchemy)
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
