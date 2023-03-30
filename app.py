@@ -1,10 +1,8 @@
 import click
 import os
 import sys
-from flask import Flask, render_template
+from flask import Flask, render_template, request, url_for, redirect, flash
 from flask_sqlalchemy import SQLAlchemy
-
-app = Flask(__name__)
 
 
 WIN = sys.platform.startswith('win')
@@ -13,6 +11,7 @@ if WIN:  # 如果是 Windows 系统，使用三个斜线
 else:  # 否则使用四个斜线
     prefix = 'sqlite:////'
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'dev'  # 等同于 app.secret_key = 'dev'
 app.config['SQLALCHEMY_DATABASE_URI'] = prefix + os.path.join(app.root_path, 'data.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # 关闭对模型修改的监控
 # 在扩展类实例化前加载配置
@@ -54,17 +53,59 @@ def forge():
 
 @app.context_processor
 def inject_user():
-    user = User.query.first()
-    return dict(user=user)
+    user = User.query.first()  # 从数据库中查询第一个用户
+    return dict(user=user)  # 将查询到的用户封装到一个字典对象并返回
 
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template('404.html'), 404
+    return render_template('404.html'), 404  # 当出现 404 错误时，渲染 404.html 模板，并返回 404 状态码
 
 
-@app.route('/')
+@app.route('/movie/edit/<int:movie_id>', methods=['GET', 'POST'])
+def edit(movie_id):
+    movie = Movie.query.get_or_404(movie_id)
+
+    if request.method == 'POST':
+        title = request.form['title']
+        year = request.form['year']
+
+        if not title or not year or len(year) != 4 or len(title) > 60:
+            flash('Invalid input.')
+            return redirect(url_for('edit', movie_id=movie_id))
+
+        movie.title = title
+        movie.year = year
+        db.session.commit()
+        flash('Item updated.')
+        return redirect(url_for('index'))
+
+    return render_template('edit.html', movie=movie)
+
+
+@app.route('/movie/delete/<int:movie_id>', methods=['GET', 'POST'])
+def delete(movie_id):
+    movie = Movie.query.get_or_404(movie_id)
+    db.session.delete(movie)
+    db.session.commit()
+    flash('Item deleted.')
+    return redirect(url_for('index'))
+
+
+@app.route('/', methods=['GET', 'POST'])  # 定义根路径（'/'）的路由
 def index():
+    if request.method == 'POST':
+        title = request.form.get('title')
+        year = request.form.get('year')
+        if not title or not year or len(year) > 4 or len(title) > 60:
+            flash('Invalid input.')
+            return redirect(url_for('index'))
+        movie = Movie(title=title, year=year)
+        db.session.add(movie)
+        db.session.commit()
+        flash('Item created.')
+        return redirect(url_for('index'))
     movies = Movie.query.all()  # 读取所有电影记录
-    return render_template('index.html', movies=movies)
+    return render_template('index.html', movies=movies)  # 渲染 index.html 模板，并将 movies 变量传递给模板
+
 

@@ -10,6 +10,9 @@
     {% endblock %}
 </head>
 <body> <!-- body标签包含网页的可见内容 -->
+    {% for message in get_flashed_messages() %}
+        <div class="alert">{{ message }}</div>
+    {% endfor %}
     <h2>
         <img alt="Avatar" class="avatar" src="{{  url_for('static', filename='images/avatar.png')  }}"> <!-- 插入用户头像图片 -->
         {{ user.name }}'s Watchlist <!-- 显示用户名和电影清单标题 -->
