@@ -30,9 +30,9 @@ def initdb(drop):
     click.echo('Initialized database.')  # 输出提示信息
 
 
-class User(db.Model, UserMixin):  # 表名将会是 user（自动生成，小写处理）
-    id = db.Column(db.Integer, primary_key=True)  # 主键
-    name = db.Column(db.String(20))  # 名字
+class User(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(20))
     username = db.Column(db.String(20))
     password_hash = db.Column(db.String(128))
 
@@ -149,7 +149,7 @@ def login():
         user = User.query.first()
         if username == user.username and user.validate_password(password):
             login_user(user)
-            flash('Login success')
+            flash('Login success.')
             return redirect(url_for('index'))
 
         flash('Invalid username or password.')
