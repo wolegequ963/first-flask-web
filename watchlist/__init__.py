@@ -20,8 +20,8 @@ else:
 app = Flask(__name__)
 
 # 配置应用程序
-app.config['SECRET_KEY'] = 'dev'  # 设置用于生成密钥的字符串
-app.config['SQLALCHEMY_DATABASE_URI'] = prefix + os.path.join(os.path.dirname(app.root_path), 'data.db')  # 设置数据库 URI
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'dev')  # 设置用于生成密钥的字符串
+app.config['SQLALCHEMY_DATABASE_URI'] = prefix + os.path.join(os.path.dirname(app.root_path), os.getenv('DATABASE_FILE', 'data.db'))  # 设置数据库 URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # 关闭追踪数据库修改
 
 # 创建 SQLAlchemy 数据库实例
